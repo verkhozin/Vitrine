@@ -7,7 +7,7 @@
 <p align="center">A glass display cabinet for your real-world collections — right on your phone.</p>
 
 <p align="center">
-  <img src="docs/demo.gif" alt="Vitrine demo" width="300" />
+  <img src="docs/demo.gif" alt="Vitrine demo" width="600" />
 </p>
 
 Figurines, vinyl, books, retro games, art prints — whatever you collect, Vitrine gives each item a card on a visual shelf. Snap a photo, let on-device AI cut the background, drag items between shelves, and browse everything in one place.
