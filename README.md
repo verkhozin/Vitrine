@@ -4,66 +4,49 @@
 
 <h1 align="center">Vitrine</h1>
 
-<p align="center">A glass display cabinet for your real-world collections — right on your phone.</p>
+<p align="center">A glass display cabinet for your real-world collections — rebuilt around shelves, light, and the satisfaction of arranging things.</p>
 
 <p align="center">
-  <img src="docs/demo.gif" alt="Vitrine demo" width="600" />
+  <img src="docs/demo.gif" alt="Vitrine in action" width="600" />
 </p>
 
-Figurines, vinyl, books, retro games, art prints — whatever you collect, Vitrine gives each item a card on a visual shelf. Snap a photo, let on-device AI cut the background, drag items between shelves, and browse everything in one place.
+Open the app and your collections sit on glass shelves, each item a card resting on a Liquid Glass bar held by two brushed-metal clips. Scroll and the clips catch the light. Pick up a card and drag it to another shelf — the row reflows with a spring and a haptic taps the moment it crosses over. Add an item, snap a photo, and watch a neon sweep trace its silhouette as on-device AI lifts it clean off its background.
 
-## How it works
+## Details that make it feel alive
 
-Create a collection (pick a name, icon, and color), tap **+** to add an item, snap or choose a photo — the app removes the background on-device using Apple Vision — and your item appears on a horizontal shelf. Drag cards between shelves to reorganize. Tap a card to see full details, metadata, and a photo gallery.
+- **Light-catching shelf clips** — each shelf rests on a glass bar pinned by two brushed-metal clips; as the shelf scrolls, a radial highlight orbits across each clip and the brushed gradient rotates, so the metal catches the light in real time — driven by the actual scroll position, not a timer
+- **Glow sweep on the cut-out** — flip *Remove Background* and the lifted subject lights up with a layered blue glow while a soft sweep traces its edge top-to-bottom once, like a scanner pass (1.2s ease)
+- **Drag between shelves** — grab any card and drop it on another shelf; items reflow with a spring, the card in hand fades to 30%, and a light haptic fires the instant it lands on a new shelf
+- **Liquid Glass throughout** — `glassEffect()` backs the shelf bars (tinted with each collection's color), list rows, detail metadata, and settings cards for a native iOS 26 look
+- **Pinch-crop locked to the card** — the crop editor zooms 1×–5× and drags to reposition inside a frame locked to the card's 110:160 aspect, with a dimmed reverse-mask cutout framing the keeper
+- **Color-themed detail page** — each item's detail view tints its background gradient and the hero image's shadow with the parent collection's color
+- **Procedural covers on first launch** — five collections arrive pre-seeded with generated cover art (a per-item gradient palette, an SF Symbol watermark, the title) so the shelves look full before you've added a thing
+- **Editorial header** — "My COLLECTION" set in 38pt black serif with letter-spacing over a quiet secondary line
 
-## Use cases
+## What's inside
 
-- **Action figures** — photograph each figure, remove the background for a clean card, track brand / scale / condition.
-- **Vinyl & books** — catalogue your library with cover photos, author, year, and format metadata.
-- **Retro games** — log platform, year, completeness (CIB / loose / sealed).
-- **Art prints** — keep a visual inventory with artist, year, and print size.
-- **Anything else** — custom key-value metadata fields adapt to whatever you collect.
+About 2,500 lines of Swift across `App / Models / Views / Services / Extensions`. Three SwiftData `@Model` types — `CCollection`, `CItem`, `CItemPhoto` — with cascade-delete relationships, surfaced through `@Query`. Photos live as files in the app's Documents directory: originals as JPEG, background-removed cut-outs as PNG to keep their transparency, each indexed by filename on the model and held in an `NSCache` for instant reloads.
 
-## Features
-
-- **Shelf UI** — each collection is a horizontal scrollable shelf with item cards sitting on a glass bar with metallic clips.
-- **Drag & drop** — reorder items within a shelf or move them between shelves with native drag gestures and haptic feedback.
-- **AI background removal** — `VNGenerateForegroundInstanceMaskRequest` removes backgrounds on-device, no network needed. Toggle it on or off per photo.
-- **Photo crop editor** — pinch-to-zoom, drag-to-reposition crop locked to the card's aspect ratio.
-- **Camera & gallery** — add photos from the camera or photo library.
-- **Custom metadata** — flexible key-value fields (Brand, Year, Condition, Format, etc.) per item.
-- **Favorites** — heart any item; a dedicated tab shows all favorites across collections.
-- **Glass effects** — `glassEffect()` on shelf bars, item rows, and detail cards for a native iOS 26 look.
-- **Mock data** — ships with five pre-seeded collections (Figurines, Books, Vinyl, Retro Games, Art Prints) with procedurally generated cover art so the app looks alive on first launch.
-- **Local storage** — SwiftData for models, JPEG/PNG files in Documents for photos. No server, no account.
-
-## Architecture
-
-~1,500 lines of Swift across `App / Models / Views / Services / Extensions`.
-
-| Layer | What it does |
-|-------|-------------|
-| **Models** | `CCollection`, `CItem`, `CItemPhoto` — SwiftData `@Model` classes with cascade delete rules |
-| **Views** | `CollectionListView` (shelves + drag-drop), `ItemListView` (searchable list), `ItemDetailView` (hero image + metadata), `AddItemSheet` (photo + crop + bg removal), `FavoritesView`, `SettingsView` |
-| **Services** | `BackgroundRemovalService` (Vision framework), `ImageStorageService` (Documents dir + NSCache), `MockDataService` (seed data + procedural covers) |
-| **Components** | `ShelfBarView` (glass bar + metallic clips with scroll-reactive highlights), `ImageCropView` (interactive crop editor) |
-
-Data flows through SwiftData `@Query` and `@Relationship`. No third-party dependencies.
+Background removal runs `VNGenerateForegroundInstanceMaskRequest` on-device and blends the mask back over the source with `CIBlendWithMask` — no network, no account. Drag-and-drop is plain `NSItemProvider` + `DropDelegate` carrying the item's `persistentModelID` as its transfer token; landing on a card rewrites `sortOrder` on both the source and target shelves. The brushed-metal clips read their own `midY` through `onGeometryChange` to drive the highlight, so the shelf reacts to scrolling with no observers and no state plumbing. No third-party dependencies.
 
 ## Requirements
 
-- iOS 26+
+- iOS 26+ (the `glassEffect()` Liquid Glass material is a 26-only API)
 - Xcode 26+
-- Physical device recommended (background removal uses Vision APIs unavailable in Simulator)
+- A physical device recommended — the Vision foreground-mask API doesn't run in the Simulator; without it the app still works and simply keeps the original photo
 
 ## Build & run
 
 ```bash
-open Collectioner.xcodeproj    # then Cmd+R in Xcode
+open Collectioner.xcodeproj    # then ⌘R in Xcode
 ```
 
-No package manager setup, no code generation — open and build.
+No package manager, no code generation — open and build. On first launch the database seeds five collections (Figurines, Books, Vinyl, Retro Games, Art Prints) with procedurally generated covers, so the shelves are populated immediately.
+
+## Status
+
+A visual exploration, not a shipped product. The first-run data is seeded by `MockDataService` and there's still a hidden **Debug** tab from development. Custom metadata fields are read-only in the UI (they're defined in seed data only), and items can't yet be renamed after they're created — an item editor, editable metadata fields, and iCloud sync are the obvious next steps.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).

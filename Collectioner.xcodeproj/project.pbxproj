@@ -133,10 +133,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Collectioner/Preview Content\"";
-				DEVELOPMENT_TEAM = LU7S8ANMV5;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Collectioner;
+				INFOPLIST_KEY_CFBundleDisplayName = Vitrine;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take photos of your collectible items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your collectible items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -169,10 +169,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Collectioner/Preview Content\"";
-				DEVELOPMENT_TEAM = LU7S8ANMV5;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Collectioner;
+				INFOPLIST_KEY_CFBundleDisplayName = Vitrine;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take photos of your collectible items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Choose photos of your collectible items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
